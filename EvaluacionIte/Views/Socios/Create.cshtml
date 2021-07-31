@@ -1,0 +1,81 @@
+﻿@model DatosEvaluacion.Model.Socio
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Socio</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Cedula" class="control-label"></label>
+                <input asp-for="Cedula" maxlength="10" required class="form-control" />
+                <span asp-validation-for="Cedula" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" onclick="ValidarCedula()" required class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Apellido" class="control-label"></label>
+                <input asp-for="Apellido" required class="form-control" />
+                <span asp-validation-for="Apellido" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Direccion" class="control-label"></label>
+                <input asp-for="Direccion" required class="form-control" />
+                <span asp-validation-for="Direccion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+
+        function ValidarCedula() {
+            var cedula = $('#Cedula').val(); //document.getElementById('Cedula').value.trim();
+            var total = 0;
+            var longitud = cedula.length;
+            var longcheck = longitud - 1;
+            if (cedula !== "" && longitud === 10) {
+                for (i = 0; i < longcheck; i++) {
+                    if (i % 2 === 0) {
+                        var aux = cedula.charAt(i) * 2;
+                        if (aux > 9) aux -= 9;
+                        total += aux;
+                    } else {
+                        total += parseInt(cedula.charAt(i)); // parseInt o concatenará en lugar de sumar
+                    }
+                }
+                total = total % 10 ? 10 - total % 10 : 0;
+                if (cedula.charAt(longitud - 1) == total) {
+                    $('#Cedula').css('border', ' 5px solid #A9DFBF');
+                    $(':input[type="submit"]').prop('disabled', false);
+                } else {
+                    $('#Cedula').css('border', ' 5px solid #F1948A');
+                    $(':input[type="submit"]').prop('disabled', true);
+                    //alert('Cédula Inválida');
+                }
+            }
+            else {
+                alert('Ingrese los 10 digitos de la cédula');
+            }
+        }
+    </script>
+}
