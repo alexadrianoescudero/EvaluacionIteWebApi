@@ -1,6 +1,8 @@
 ﻿using DatosEvaluacion.Data;
 using DatosEvaluacion.Model;
 using DatosEvaluacion.ViewModel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,6 +15,7 @@ namespace WebApiEval.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class SociosController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
